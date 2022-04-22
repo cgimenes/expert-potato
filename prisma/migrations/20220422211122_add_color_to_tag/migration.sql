@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "TagColor" AS ENUM ('SLATE', 'GRAY', 'ZINC', 'NEUTRAL', 'STONE', 'RED', 'ORANGE', 'AMBER', 'YELLOW', 'LIME', 'GREEN', 'EMERALD', 'TEAL', 'CYAN', 'SKY', 'BLUE', 'INDIGO', 'VIOLET', 'PURPLE', 'FUCHSIA', 'PINK', 'ROSE');
+
+-- AlterTable
+ALTER TABLE "Tag" ADD COLUMN     "color" "TagColor" NOT NULL DEFAULT E'GRAY';

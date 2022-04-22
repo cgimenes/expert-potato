@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name  String
+  email String @unique
+
+  habits Habit[]
+  tags Tag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HabitProgress {
+  id String @id @default(uuid())
+
+  habit Habit @relation(fields: [habitId], references: [id])
+  habitId String
+
+  type ProgressType @default(DONE)
+
+  createdAt  DateTime     @default(now())
+}
+
+model Habit {
+  id String @id @default(uuid())
+
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  name String
+  tags TagsOnHabits[]
+
+  dailyHabit DailyHabit?
+  weeklyHabit WeeklyHabit?
+  // monthlyHabit MonthlyHabit?
+  // specificDaysHabit SpecificDaysHabit?
+  // yearlyHabit YearlyHabit?
+
+  progress HabitProgress[]
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model DailyHabit {
+  id String @id @default(uuid())
+
+  habit Habit @relation(fields: [habitId], references: [id])
+  habitId String
+
+  days         Weekday[]
+  howManyTimes Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WeeklyHabit {
+  id String @id @default(uuid())
+
+  habit Habit @relation(fields: [habitId], references: [id])
+  habitId String
+
+  howManyDays Int @default(1)
+  howManyTimesPerDay Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model MonthlyHabit {
+//   id String @id @default(uuid())
+
+//   habit Habit @relation(fields: [habitId], references: [id])
+//   habitId String
+
+//   day Int
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model YearlyHabit {
+//   id String @id @default(uuid())
+
+//   habit Habit @relation(fields: [habitId], references: [id])
+//   habitId String
+
+//   months Month[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model SpecificDaysHabit {
+//   id String @id @default(uuid())
+
+//   habit Habit @relation(fields: [habitId], references: [id])
+//   habitId String
+
+//   days         Weekday[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+model Tag {
+  id String @id @default(uuid())
+
+  name String
+  color TagColor @default(GRAY)
+
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  habits     TagsOnHabits[]
+}
+
+model TagsOnHabits {
+  habit       Habit     @relation(fields: [habitId], references: [id])
+  habitId     String
+  tag   Tag @relation(fields: [tagId], references: [id])
+  tagId String
+
+  @@id([habitId, tagId])
+}
+
+enum Weekday {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum ProgressType {
+  DONE
+  SKIPPED
+  MISSED
+}
+
+// enum Month {
+//   JANUARY
+//   FEBRUARY
+//   APRIL
+//   JUNE
+//   JULY
+//   AUGUST
+//   OCTOBER
+//   NOVEMBER
+//   DECEMBER
+// }
+
+enum TagColor {
+  SLATE
+  GRAY
+  ZINC
+  NEUTRAL
+  STONE
+  RED
+  ORANGE
+  AMBER
+  YELLOW
+  LIME
+  GREEN
+  EMERALD
+  TEAL
+  CYAN
+  SKY
+  BLUE
+  INDIGO
+  VIOLET
+  PURPLE
+  FUCHSIA
+  PINK
+  ROSE
+}
