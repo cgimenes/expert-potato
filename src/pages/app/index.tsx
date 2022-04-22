@@ -42,7 +42,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         select: {
           tag: {
             select: {
-              name: true
+              name: true,
+              color: true
             }
           }
         }
@@ -68,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       id: habit.id,
       name: habit.name,
       done: habit.progress.some(p => p.type === "DONE" && p.createdAt.setHours(0,0,0,0) == (new Date()).setHours(0,0,0,0)),
-      tags: habit.tags.map(t => t.tag.name)
+      tags: habit.tags.map(t => t.tag)
     }
   })
 

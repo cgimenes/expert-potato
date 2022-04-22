@@ -1,6 +1,8 @@
-export default function Tag({ text }) {
+export default function Tag({ text, color }) {
+  const classes = `text-xs bg-${color}-200 text-${color}-600 font-semibold px-2 py-1 rounded-md ml-3`
+
   return(
-    <span  className="text-xs bg-red-200 text-red-600 font-semibold px-2 py-1 rounded-md ml-3">
+    <span className={classes}>
       {text}
     </span>
   )

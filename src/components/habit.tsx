@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import Tag from "./tag";
+import Tags from "./tags";
 
 export default function Habit({ habit }) {
   const [checked, setChecked] = useState(habit.done);
@@ -36,9 +36,7 @@ export default function Habit({ habit }) {
         <label htmlFor="comments" className="font-medium text-gray-700">
         {habit.name}
         </label>
-        {habit.tags.map(tag => (
-          <Tag key={tag} text={tag} />
-        ))}
+        <Tags tags={habit.tags} />
       </div>
     </div>
   )
