@@ -1,10 +1,13 @@
 import { Disclosure, Menu } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const navigation = [
-  { name: 'Today', href: '#', current: true },
+  { name: 'Today', href: '/app' },
+  { name: 'Tags', href: '/app/tags' },
 ]
+
 const userNavigation = [
   // { name: 'Your Profile', href: '#' },
   // { name: 'Settings', href: '#' },
@@ -15,8 +18,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Layout({ user, ...props }) {
-  console.log(user);
+export default function Layout({ user, title, ...props }) {
+  const router = useRouter()
+
+  const handleNavClick = href => {
+    return e => {
+      e.preventDefault()
+      router.push(href)
+    }
+  }
+
   return (
     <>
       {/*
@@ -48,13 +59,14 @@ export default function Layout({ user, ...props }) {
                           <a
                             key={item.name}
                             href={item.href}
+                            onClick={handleNavClick(item.href)}
                             className={classNames(
-                              item.current
+                              router.asPath === item.href
                                 ? 'bg-gray-900 text-white'
                                 : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                               'px-3 py-2 rounded-md text-sm font-medium'
                             )}
-                            aria-current={item.current ? 'page' : undefined}
+                            aria-current={router.asPath === item.href ? 'page' : undefined}
                           >
                             {item.name}
                           </a>
@@ -114,11 +126,12 @@ export default function Layout({ user, ...props }) {
                       key={item.name}
                       as="a"
                       href={item.href}
+                      onClick={handleNavClick(item.href)}
                       className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        router.asPath === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'block px-3 py-2 rounded-md text-base font-medium'
                       )}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={router.asPath === item.href ? 'page' : undefined}
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -155,7 +168,7 @@ export default function Layout({ user, ...props }) {
 
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900">Today</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
           </div>
         </header>
         <main>

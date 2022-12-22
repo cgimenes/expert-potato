@@ -1,4 +1,3 @@
-import { LockClosedIcon } from '@heroicons/react/solid'
 import { GetServerSideProps } from 'next';
 import { getSession, signIn, signOut } from 'next-auth/react';
 

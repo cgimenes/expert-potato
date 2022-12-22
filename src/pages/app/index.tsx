@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { getSession, signOut, useSession } from "next-auth/react"
 import { prisma } from '../../lib/prisma';
 import Layout from "../../components/layout";
-import Habits from "../../components/habits";
+import Habits from "../../components/habits/habits";
 
 export default function App({ habits }) {
   const { data } = useSession();
@@ -15,7 +15,7 @@ export default function App({ habits }) {
   // }
 
   return (
-    <Layout user={data?.user}>
+    <Layout title="Today" user={data?.user}>
       <Habits habits={habits} />
 
       {/* <form onSubmit={handleCreateHabit}>
